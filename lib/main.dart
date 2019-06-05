@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:higia/administrador.dart';
 import 'package:higia/login_page.dart';
+import 'administrador.dart';
 import 'home_page.dart';
+import 'enfermero.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,6 +12,8 @@ class MyApp extends StatelessWidget{
   final routes =<String,WidgetBuilder>{
     LoginPage.tag: (context) =>LoginPage(),
     HomePage.tag: (context) =>HomePage(),
+    Administrador.tag: (context) =>Administrador(),
+    Enfermero.tag: (context) => Enfermero(),
   };
 
   @override
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: LoginPage(),
+      home:LoginPage(),
       routes: routes,
       );
   }

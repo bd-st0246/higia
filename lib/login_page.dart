@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'home_page.dart';
-import 'package:mysql1/mysql1.dart';
+import 'administrador.dart';
+import 'enfermero.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -15,8 +16,11 @@ final _formKey = GlobalKey<FormState>();
 final userValue = new TextEditingController();
 final passwordValue = new TextEditingController();
 bool acceso= false;
-final conn = await MySqlConnection.connect(new ConnectionSettings(
-host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
+bool isDoctor = false;
+bool isAdmin= false;
+bool isEnferm= false;
+
+
 
   @override
 
@@ -37,10 +41,13 @@ host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
           return 'try again';
         }else if (value.contains('doctor')||value.contains('doctora')){
           acceso= true;
+          isDoctor=true;
         }else if(value.contains('enfermero')|| value.contains('enfermera')){
           acceso=true;
+          isEnferm= true;
         }else if(value.contains('administrador') || value.contains('administradora')) {
            acceso=true;
+          isAdmin= true;
         }else {
           return 'wrong id';
         }
@@ -65,7 +72,7 @@ host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
       autofocus: false,    
       obscureText: true,  
       decoration: InputDecoration(
-        hintText: 'Contraseña',
+        hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -75,27 +82,36 @@ host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent,
-        elevation: 0.2,
+        shadowColor: Colors.lightBlueAccent.shade100,
+        elevation: 5.0,
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)
-          ),
           onPressed: () { 
-            //fetchPost(userValue,passwordValue); 
-            if (_formKey.currentState.validate()) {     
-            Navigator.of(context).pushNamed(HomePage.tag);
-            }
+            if (_formKey.currentState.validate() && isAdmin==true ){                                 
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(Administrador.tag);
+           }else if (_formKey.currentState.validate()&& isDoctor==true){
+             Navigator.of(context).pop();
+             Navigator.of(context).pushNamed(HomePage.tag);
+           }else if (_formKey.currentState.validate()&& isEnferm==true){
+             Navigator.of(context).pop();
+             Navigator.of(context).pushNamed(Enfermero.tag);
+           }
           },
           color: Colors.lightBlueAccent,
-
-          child: Text('Entrar', style: TextStyle(color: Colors.white)),
+          child: Text('Log In', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
     }
+    
+    final forgotLabel = FlatButton(
+      child: Text('Forgot password?',
+      style: TextStyle(color: Colors.black54),    
+      ),
+      onPressed: (){},
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(
@@ -113,6 +129,7 @@ host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
             password,
             SizedBox(height: 24.0),
             _buildLoginButton(context),
+            forgotLabel
           ],
         ), )),
       ),
