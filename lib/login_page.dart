@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'package:mysql1/mysql1.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -14,8 +15,8 @@ final _formKey = GlobalKey<FormState>();
 final userValue = new TextEditingController();
 final passwordValue = new TextEditingController();
 bool acceso= false;
-
-
+final conn = await MySqlConnection.connect(new ConnectionSettings(
+host: '192.168.137.1', port: 3306, user: 'root', db: 'testdb'));
 
   @override
 
@@ -64,7 +65,7 @@ bool acceso= false;
       autofocus: false,    
       obscureText: true,  
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: 'Contraseña',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -74,11 +75,14 @@ bool acceso= false;
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
+        shadowColor: Colors.lightBlueAccent,
+        elevation: 0.2,
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0)
+          ),
           onPressed: () { 
             //fetchPost(userValue,passwordValue); 
             if (_formKey.currentState.validate()) {     
@@ -86,17 +90,12 @@ bool acceso= false;
             }
           },
           color: Colors.lightBlueAccent,
-          child: Text('Log In', style: TextStyle(color: Colors.white)),
+
+          child: Text('Entrar', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
     }
-    final forgotLabel = FlatButton(
-      child: Text('Forgot password?',
-      style: TextStyle(color: Colors.black54),    
-      ),
-      onPressed: (){},
-    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(
@@ -114,7 +113,6 @@ bool acceso= false;
             password,
             SizedBox(height: 24.0),
             _buildLoginButton(context),
-            forgotLabel
           ],
         ), )),
       ),
