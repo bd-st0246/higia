@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:higia/login_page.dart';
+import 'home_page.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget{
+
+  final routes =<String,WidgetBuilder>{
+    LoginPage.tag: (context) =>LoginPage(),
+    HomePage.tag: (context) =>HomePage(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +21,7 @@ class MyApp extends StatelessWidget{
         primarySwatch: Colors.lightBlue,
       ),
       home: LoginPage(),
-    );
+      routes: routes,
+      );
   }
 }
