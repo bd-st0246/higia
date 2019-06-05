@@ -21,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
     final email = TextFormField(
       keyboardType: TextInputType.text,
       autofocus: false,
-      initialValue: 'doctor',
       decoration: InputDecoration(
         hintText: 'Usuario',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -30,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     );
     final password = TextFormField(
       autofocus: false,
-      initialValue: 'some password',
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
