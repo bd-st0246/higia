@@ -136,12 +136,21 @@ class Formulario extends StatelessWidget{
       ),
     );
     final addLabel= RaisedButton(
+      color: Colors.lightBlue,
+      shape: RoundedRectangleBorder(
+          borderRadius:BorderRadius.circular(
+              30.0
+          )
+      ),
       child: Text('save',
     ),
     onPressed: () {},
     );
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
+      appBar: AppBar(
+        title: Text('Añadir Pacientes'),
+      ),
       body: Builder(
         builder: (context) =>Center(
           child: Form(
@@ -150,7 +159,6 @@ class Formulario extends StatelessWidget{
               shrinkWrap: true,
               padding: EdgeInsets.only(left: 15.0,right: 15.0),
               children: <Widget>[
-                logo,
                 SizedBox(height: 20.0),
                 id,
                 SizedBox(height: 6.0),
@@ -174,7 +182,7 @@ class Formulario extends StatelessWidget{
                 SizedBox(height: 6.0),
                 eps,
                 SizedBox(height: 6.0),
-                addLabel                
+                addLabel
               ],
             ),
           )

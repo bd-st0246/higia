@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import 'administrador.dart';
-import 'enfermero.dart';
+import 'ScrollableMenu.dart';
+import 'Connection.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -15,13 +14,6 @@ class _LoginPageState extends State<LoginPage> {
 final _formKey = GlobalKey<FormState>();
 final userValue = new TextEditingController();
 final passwordValue = new TextEditingController();
-bool acceso= false;
-bool isDoctor = false;
-bool isAdmin= false;
-bool isEnferm= false;
-
-
-
   @override
 
   Widget build(BuildContext context) {
@@ -34,22 +26,11 @@ bool isEnferm= false;
       ),
     );
 
-    final email = TextFormField(
+    final username = TextFormField(
       controller: userValue,
       validator: (value){
         if (value.isEmpty){
-          return 'try again';
-        }else if (value.contains('doctor')||value.contains('doctora')){
-          acceso= true;
-          isDoctor=true;
-        }else if(value.contains('enfermero')|| value.contains('enfermera')){
-          acceso=true;
-          isEnferm= true;
-        }else if(value.contains('administrador') || value.contains('administradora')) {
-           acceso=true;
-          isAdmin= true;
-        }else {
-          return 'wrong id';
+          return 'Usuario no puede estar en blaco';
         }
       },
       keyboardType: TextInputType.text,
@@ -64,15 +45,13 @@ bool isEnferm= false;
       controller: passwordValue,
       validator: (value){
         if (value.isEmpty){
-          return 'try again';
-        } else if (value.length < 4){
-          return 'Error';
+          return 'Contraseña no puede estar en blanco';
         }
       },
       autofocus: false,    
       obscureText: true,  
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: 'Contraseña',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -83,35 +62,29 @@ bool isEnferm= false;
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
         shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
+        elevation: 0.0,
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: () { 
-            if (_formKey.currentState.validate() && isAdmin==true ){                                 
-                Navigator.of(context).pop();
-                Navigator.of(context).pushNamed(Administrador.tag);
-           }else if (_formKey.currentState.validate()&& isDoctor==true){
-             Navigator.of(context).pop();
-             Navigator.of(context).pushNamed(HomePage.tag);
-           }else if (_formKey.currentState.validate()&& isEnferm==true){
-             Navigator.of(context).pop();
-             Navigator.of(context).pushNamed(Enfermero.tag);
-           }
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0)
+          ),
+          onPressed: () {
+            print("se preciono");
+            if (Connection.login(userValue.text, passwordValue.text) != '') {
+              print("se consulto");
+              Navigator.pushNamed(context, ScrollableMenu.tag,
+                  arguments: levelAccess("AVANZADO"));
+            }
           },
           color: Colors.lightBlueAccent,
-          child: Text('Log In', style: TextStyle(color: Colors.white)),
+
+          child: Text('Entrar', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
     }
-    
-    final forgotLabel = FlatButton(
-      child: Text('Forgot password?',
-      style: TextStyle(color: Colors.black54),    
-      ),
-      onPressed: (){},
-    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(
@@ -124,12 +97,11 @@ bool isEnferm= false;
           children: <Widget>[
             logo,
             SizedBox(height: 48.0),
-            email,
+            username,
             SizedBox(height: 8.0),
             password,
             SizedBox(height: 24.0),
             _buildLoginButton(context),
-            forgotLabel
           ],
         ), )),
       ),
